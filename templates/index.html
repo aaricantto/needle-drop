@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Now Spinning</title>
+    <style>
+        .center {
+            text-align: center;
+        }
+        .album-art-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #album-art {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>Now Spinning</h1>
+        <div class="album-art-container">
+            <img id="album-art" src="{{ url_for('static', filename='albumart.jpg') }}" alt="Album Art" width="500" height="500">
+        </div>
+        <h2 id="listening">Listening to vinyl...</h2>
+        <h2 id="song" style="display: none;">Song: {{ song }}</h2>
+        <h3 id="artist" style="display: none;">Artist: {{ artist }}</h3>
+        <h3 id="album" style="display: none;">Album: {{ album }}</h3>
+    </div>
+    <script>
+        function fetchUpdate() {
+            fetch('/update')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.song && data.artist && data.album) {
+                        document.getElementById('listening').style.display = 'none';
+                        document.getElementById('song').innerText = 'Song: ' + data.song;
+                        document.getElementById('artist').innerText = 'Artist: ' + data.artist;
+                        document.getElementById('album').innerText = 'Album: ' + data.album;
+                        document.getElementById('album-art').src = '/static/albumart.jpg?' + new Date().getTime();
+                        document.getElementById('song').style.display = 'block';
+                        document.getElementById('artist').style.display = 'block';
+                        document.getElementById('album').style.display = 'block';
+                        document.getElementById('album-art').style.display = 'block';
+                    } else {
+                        document.getElementById('listening').innerText = 'No songs are spinning right now';
+                        document.getElementById('listening').style.display = 'block';
+                        document.getElementById('song').style.display = 'none';
+                        document.getElementById('artist').style.display = 'none';
+                        document.getElementById('album').style.display = 'none';
+                        document.getElementById('album-art').style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error fetching update:', error));
+        }
+        setInterval(fetchUpdate, 5000);
+    </script>
+</body>
+</html>
