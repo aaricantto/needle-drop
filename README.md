@@ -1,4 +1,4 @@
-# Now Spinning - Vinyl Recognition and Album Art Display
+# Needle Drop - Vinyl Recognition and Album Art Display
 
 This project is a web application that listens to vinyl records playing through a connected audio input, recognizes the song, artist, and album, and displays the corresponding album art along with song information on a web page. The project leverages the ACRCloud and Last.fm APIs for song recognition and fetching album information, respectively.
 
